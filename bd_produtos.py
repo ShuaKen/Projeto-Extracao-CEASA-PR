@@ -9,9 +9,6 @@ cursor.execute("CREATE TABLE Produtos(id INTEGER NOT NULL PRIMARY KEY AUTOINCREM
 
 banco.commit()
 
-# cursor.execute("SELECT * FROM pessoas")
-# print(cursor.fetchall())
-
 # cursor.execute("SELECT * FROM Produtos")
 # rows = cursor.fetchall()
 
