@@ -1,4 +1,3 @@
-#parou nesse aqui
 import re
 import tabula
 import sqlite3
@@ -13,7 +12,7 @@ filename2011j = "janeiro032011.pdf"
 filename2024j = "janeiro31012024.pdf" 
 filename2014d = "Dezembro302014.pdf"
 filename2010d = "2010dezembro02.pdf"
-test = "C:/Users/joshu/OneDrive/Documentos/extracaoPdfTcc/baixados/0015Junho29.pdf"
+test = "C:/Users/joshu/OneDrive/Documentos/extracaoPdfTcc/baixados/2011julho06.pdf"
 filename2012f = "fevereiro022012.pdf"
 lista_produtos_comparar = ["AMEIXA", "LIMA PERSIA", 'GRAO DE BICO', "feijao", 'AMENDOIM', 'SALVIA', 'SALSINHA', 'SALSAO (AIPO)', 'MANJERONA', 'ESCAROLA/CHICORIA', 'COUVE MANTEIGA', 'COUVE CHINESA', 'COUVE BROCOLO', 'CHEIRO VERDE', 'ASPARGO', 'ALHO PORO', 'MANDIOQUINHA/BATATA SALSA','ALECRIM', 'CEBOLAO', "INHAME-TAIA",'AIPIM-MANDIOCA', 'ALHO IMPORTADO', 'ALHO NACIONAL', "PIMENTA","CAXI","Abacate Breda/Margarida", "Abacate Fucks/Geada", "Abacate Fortuna/Quintal", "Abacaxi Havai", "Abacaxi Perola","Abiu", "Acerola", "Ameixa Estrangeira", "Ameixa Nacional", "Amendoa", "Amora", "Atemoia", "Avela", "Banana Maca",
 "Banana Nanica", "Banana Prata", "Caju", "Caqui", "Carambola", "Castanha Estrangeira", "Castanha Nacional","Cereja Estrangeira", "Cidra", "Coco Verde", "Cupuacu", "Damasco Estrangeiro", "Figo", "Framboesa", "Goiaba","Graviola", "Greap Fruit", "Jabuticaba", "Jaca", "Kiwi", "Laranja","Laranja Pera", "Lichia", "Lima da Persia", "LIMAO", "Limao Taiti", "Mamao", "Manga", "Mangostao", "Maracuja Azedo", "Maracuja Doce", "Marmelo", "Melancia", "Melao Amarelo","Mexerica", "Morango", "Nectarina Estrangeira", "Nectarina Nacional", "Nespera", "Nozes", "Pera Nacional", "Pera Estrangeira", "Pessego", "Pessego Nacional", "Pessego Estrangeiro", "Physalis", "Pinha", "Pitaia", "Quincam", "Roma", "Sapoti", "Seriguela", "Tamara", "Tamarindo", "Tangerina Cravo", "Tangerina Murcot", "Tangerina Poncam", "Uva Italia","Uva Niagara", "Uva Rubi", "Uva Thompson", "Uva Estrangeira", "Abobora D'Agua", "Abobora Japonesa", "Abobora Moranga","Abobora Paulista", "Abobora Seca", "Abobrinha Brasileira", "Abobrinha Italiana","Batata Doce",'BATATA YAKON', "Alcachofra", "Batata Doce Amarela", "Batata Doce Rosada", "Berinjela Comum", "Berinjela Conserva", "Berinjela Japonesa", "Beterraba", "Cara", "Cenoura",
@@ -53,46 +52,33 @@ data = tabula.read_pdf(filename2024j, multiple_tables=True, pages="all", stream=
 if data:
     for pag_num, df in enumerate(data, start=2):
         selected_data = df.values.tolist() #seleciona linhas
-        print('selecionar: ',selected_data)
+        
         if len(selected_data) >= 1 :
             for i in selected_data:
-                print('-'*50)
+                print('-'*100)
                 produto = tipo_produto = unidade_embalagem = unidade_de_medidas = situacao_mercado = estados_siglas= ''
                 valor_unidade_de_medidas = min = m_c_do_dia = max = m_c_dia_anterior = var = total_valores = 0
                 #identifica o tipo do 1º indice da  lista
                 tipo = type(i[0])
                 #Seleção da lista
                 find_unidade=str(i)
-                
-                
-                print('ai papai', find_unidade)
-                #print('pasou find', find_unidade)
-                # if find_unidade_nan:
-                #     find_unidade = find_unidade_nan
-                #     print('if FIND_UNIDADE_NAN', find_unidade) 
                 regex_cidades = re.findall(r'\b(' + '|'.join(cidades) + r')\b', find_unidade, re.IGNORECASE)
-                #print('regex_cidades',regex_cidades)
                 #identifica as datas 
                 regex_datas = re.findall(r'(?i)\b(?:segunda|terça|quarta|quinta|sexta|sábado|domingo)-feira,\s\d{1,2}\sde\s(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\sde\s\d{4}\b', find_unidade, re.IGNORECASE)
                 regex_tipo_mais_de_uma_palavra = re.findall(r'\b[A-Z][a-zA-Z]*(?:\s+[a-zA-Z]+)*\b', find_unidade)
-                #print('antes FONTE:', find_unidade)
+                
                 if 'FONTE:' in find_unidade or 'PRODUTOS AUSENTES' in find_unidade:
                     break
                 if regex_cidades:
                     cidade = regex_cidades[-1]
-                #print('REGEX_CIDADES:', find_unidade)
+                
                 if regex_datas:
                     dia_da_semana = regex_datas
                     dia_da_semana = ''.join(dia_da_semana)
                     regex_ano = re.findall(r'\d{4}', dia_da_semana)
                     ano_obtido = regex_ano[-1]
                     ano_obtido = int(ano_obtido)
-                    print('anoaa',regex_ano, 'confere', ano_obtido)
-               
-                #print('REGEX_DATAS:', find_unidade)
-                # if tipo is float:
-                #     continue
-                #print('FLOAT', find_unidade)
+                    
                 if 'Produto' in find_unidade or 'Centrais' in find_unidade or 'Mercado' in find_unidade:
                     continue
                 
@@ -101,7 +87,7 @@ if data:
                     if tipo is str and i[0].isupper(): #encontra str com letras maiusculas
                         produto = i[0]
                         lista_produtos.append(produto)
-                        #print('>>>PRD', produto)       
+                          
                         if len(i) >= 2:
                             tipo_produto = i[1]
                             result = 'Produto: ', produto, 'tipo: ', tipo_produto  
@@ -109,13 +95,13 @@ if data:
                         tipo_produto = i[0]
                         
                         result = 'Produto: ', produto, 'tipo: ', tipo_produto  
-                        #print('Entrou')
+                        
                         if lista_produtos:
                             produto = lista_produtos[-1]
-                    #print('abaixo if continue', find_unidade)
+                    
                     #caso o tipo_produto acima obtenha mais do que o necessario(ocorre em docs do ano de 2010)
                     if str(tipo_produto).count(" ") >= 4:
-                        print('correção: ')
+                        
                         #para encontrar tipos, que vem antes de unidades de embalagem(cx, un...)    
                         regex_antes_unidade = re.findall(r'^(.*?)\s*(?:{})'.format('|'.join(re.escape(p) for p in unidades_de_embalagens)), find_unidade, re.IGNORECASE) 
                         if regex_antes_unidade:
@@ -126,8 +112,7 @@ if data:
                     
                     #verifica valores antes da unidade embalagem(cx...)
                     find_nan_inicio = find_unidade.replace('[','').replace(']','').replace("'",'').split(',')
-                #print('tests',find_nan_inicio)
-                #print(">>>>>>>>>", find_unidade)
+                
                     #caso lista comece com nan
                     if lista_produtos:
                         #se o primeiro elemento da listar for nan, vali ser substituido pelo indice -1 da lista de
@@ -135,31 +120,24 @@ if data:
                             find_unidade = find_unidade.replace('nan', f"'{lista_produtos[-1]}'", 1)
                     #para encontrar valores antes de unida de embalagens(cx, un...)
                     regex_antes_unidade = re.findall(r'^(.*?)\s*(?:{})'.format('|'.join(re.escape(p) for p in unidades_de_embalagens)), find_unidade, re.IGNORECASE)
-                    #print('regex_antes_unidade', regex_antes_unidade)
+                    
                     regex_titulo = re.findall(r'^\[\'[\w\-\/�]+(?: [\w\-\/�]+)*\'(?:\s*,\s*nan)*\s*\]$', find_unidade, re.IGNORECASE)
-                    #print('regex_titulo', regex_titulo)
+                    
                     fin_nan = re.search(r"^nan", find_unidade, re.IGNORECASE)
-                    #print('fin_nan', fin_nan)
+                    
                     find_antes = str(regex_antes_unidade).replace("[","").replace("'","").replace(",","").replace("]","").replace('"', '').replace('nan','')
-                    #print('antess:', regex_antes_unidade, find_unidade,'final: ', find_antes)
+                    
                     if find_antes or find_antes == 'nan':
                         tipo_produto = find_antes
-                        #print("tipo: ",tipo_produto)
-                        #print('antes')
+                        
                    
-                    #print('fdfdf', produto)
+                    
                     if regex_titulo:
                         find_unidade = find_unidade.replace("[","").replace("'","").replace(",","").replace("]","").replace('"', '').replace("nan", '')
                         lista_produtos.append(find_unidade)
                         produto = lista_produtos[-1]
                         produto = str(produto)
-                        #print('pord', produto)
-                    
-                    #para o caso de se for banana maca
-                    #print("list",lista_produtos)
-                    # if "MACA" in tipo_produto and lista_produtos[-2] ==  "BANANA":
-                    #     produto = lista_produtos[-2]
-                    #     print('baaaa', produto)
+                        
                     regex_produtos_comparar = re.findall(r'\b(' + '|'.join(lista_produtos_comparar) + r')\b', unidecode(find_antes), re.IGNORECASE)
                     if regex_produtos_comparar:
                         produto = str(regex_produtos_comparar).replace("[(", "").replace("'",'').replace(',','').replace(')]','')
@@ -187,17 +165,20 @@ if data:
                 
                 #para identificar os preços(MIN/ M_C DO DIA/ MAX M>C/ DIA ANTERIOR/ VAR %)
                 regex_preco= re.findall(r'\b\d+,\d{2}\b', find_unidade)
-                #print('regex_prego', regex_preco, 'Length',len(regex_preco))
+                
                 regex_produtos_2024= re.findall(r'^[A-Z]+(, "nan")+$', find_unidade, re.IGNORECASE)
                 
                 #verifica valores antes da unidade embalagem(cx...)
                 regex_antes_unidade = re.findall(r'^(.*?)\s*(?:{})'.format('|'.join(re.escape(p) for p in unidades_de_embalagens)), find_unidade, re.IGNORECASE)
                 
+                tipo_antes_unidade = str(regex_antes_unidade).replace('[','').replace(']','').replace('"','').replace("'","").replace(',','')
+                
+                if type(tipo_produto) is str and len(tipo_produto) < len(tipo_antes_unidade):
+                    tipo_produto = tipo_antes_unidade
+                
                 regex_produtos_comparar = re.findall(r'\b(' + '|'.join(lista_produtos_comparar) + r')\b', unidecode(find_unidade), re.IGNORECASE)
                 find_unidade_primeira_posicao = find_unidade.split()[0].replace("[","").replace("'", "").replace(",","")
-                #print('>>>>', find_unidade[0],'<<',find_unidade_primeira_posicao)
-                #print("comp::",regex_produtos_comparar)
-                #print('tte: ', find_unidade)
+                
                 #identifica tipo da embalagem(UNIDADE EMBALAGEM) ex:CX
                 if regex_unidade_embalagem_tipo:
                     unidade_embalagem = regex_unidade_embalagem_tipo
@@ -208,17 +189,15 @@ if data:
                 #identifica o Tipo da unidade de medida (UNIDADE EMBALAGEM) ex Kg
                 if regex_tipos_de_unidade_de_medidas:
                     unidade_de_medidas  = regex_tipos_de_unidade_de_medidas
-                    #print("unidade_de_medidas",unidade_de_medidas)
+                    
                     unidade_de_medidas = unidade_de_medidas[-1][-1]
                     
                 #identifica o valor da unidade de medida ex 1,5
                 if regex_valor_unidade_medidas:
                     valor_unidade_de_medidas = regex_valor_unidade_medidas
-                    #print("valor uni",valor_unidade_de_medidas)
                     valor_unidade_de_medidas = float(valor_unidade_de_medidas[-1].replace(',', '.'))
                 elif regex_valor_unidade_medidas_duas:
                     valor_unidade_de_medidas = regex_valor_unidade_medidas_duas
-                    #print("valor_unidade_de_medidas:",valor_unidade_de_medidas)
                     valor_unidade_de_medidas = [float(parte) for parte in valor_unidade_de_medidas[0].split(' a ')]
                     valor_unidade_de_medidas = valor_unidade_de_medidas[-1]
                 #Identifica SITUAÇAO MERCADO
@@ -230,7 +209,8 @@ if data:
                     situacao_mercado = 0
                 #Encontra campos que tem ',' significando que possuem preço ou porcentagem
                 if ',' in find_unidade:
-                    #verifcia se tem valores
+                    
+                    #verifica se tem valores
                     if len(regex_preco) == 0:
                         total_valores = 0
                     #identfica o MIN
@@ -298,6 +278,9 @@ if data:
                     if regex_estados_siglas:
                         estados_siglas = regex_estados_siglas
                         estados_siglas = ', '.join(estados_siglas)
+                    #caso o campo sigla esteja 0,00 ocorre quando não se possui procedencia
+                    if str(i[-1]) == '0,00':
+                        estados_siglas = 'não informado'
                 #caso saia fora do padrão buscado ele prosseguir   
                 else:                    
                     continue
@@ -305,7 +288,7 @@ if data:
                     produto = str(lista_produtos[-1])
                 
                 result = '+++','cidade: ',cidade,'produto:', produto, type(produto) , 'tipo: ', tipo_produto, type(tipo_produto), 'unidade Emb: ',unidade_embalagem, type(unidade_embalagem),"Valor unidade de medida: ", valor_unidade_de_medidas, type(valor_unidade_de_medidas) ,"Unidade de medidas:", unidade_de_medidas, type(unidade_de_medidas), 'Situacao Mercado:',situacao_mercado, type(situacao_mercado), 'min: ', min, type(min), 'mc do dia: ', m_c_do_dia, type(m_c_do_dia), 'max: ', max, type(max),'M_C do dia Anterior: ', m_c_dia_anterior, type(m_c_dia_anterior), 'var: ', var, type(var),  'Procedencia: ', estados_siglas, type(estados_siglas),'Data: ', dia_da_semana
-                print("fora", result)
-                if find_unidade[0] and regex_sitacao_mercado :
+                
+                if find_unidade[0] and estados_siglas: 
                     print(result)
             
