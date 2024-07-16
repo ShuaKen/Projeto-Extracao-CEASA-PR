@@ -3,7 +3,7 @@ import re
 import tabula
 import sqlite3
 from unidecode import unidecode
-conn = sqlite3.connect('BASE_CEASA_PR.db')
+conn = sqlite3.connect('ceasa.db')
 cursor = conn.cursor()
 lista_produtos_comparar = ["AMEIXA", "LIMA PERSIA", 'GRAO DE BICO', "feijao", 'AMENDOIM', 'SALVIA', 'SALSINHA', 'SALSAO (AIPO)', 'MANJERONA', 'ESCAROLA/CHICORIA', 'COUVE MANTEIGA', 'COUVE CHINESA', 'COUVE BROCOLO', 'CHEIRO VERDE', 'ASPARGO', 'ALHO PORO', 'MANDIOQUINHA/BATATA SALSA','ALECRIM', 'CEBOLAO', "INHAME-TAIA",'AIPIM-MANDIOCA', 'ALHO IMPORTADO', 'ALHO NACIONAL', "PIMENTA","CAXI","Abacate Breda/Margarida", "Abacate Fucks/Geada", "Abacate Fortuna/Quintal", "Abacaxi Havai", "Abacaxi Perola","Abiu", "Acerola", "Ameixa Estrangeira", "Ameixa Nacional", "Amendoa", "Amora", "Atemoia", "Avela", "Banana Maca",
 "Banana Nanica", "Banana Prata", "Caju", "Caqui", "Carambola", "Castanha Estrangeira", "Castanha Nacional","Cereja Estrangeira", "Cidra", "Coco Verde", "Cupuacu", "Damasco Estrangeiro", "Figo", "Framboesa", "Goiaba","Graviola", "Greap Fruit", "Jabuticaba", "Jaca", "Kiwi", "Laranja","Laranja Pera", "Lichia", "Lima da Persia", "LIMAO", "Limao Taiti", "Mamao", "Manga", "Mangostao", "Maracuja Azedo", "Maracuja Doce", "Marmelo", "Melancia", "Melao Amarelo","Mexerica", "Morango", "Nectarina Estrangeira", "Nectarina Nacional", "Nespera", "Nozes", "Pera Nacional", "Pera Estrangeira", "Pessego", "Pessego Nacional", "Pessego Estrangeiro", "Physalis", "Pinha", "Pitaia", "Quincam", "Roma", "Sapoti", "Seriguela", "Tamara", "Tamarindo", "Tangerina Cravo", "Tangerina Murcot", "Tangerina Poncam", "Uva Italia","Uva Niagara", "Uva Rubi", "Uva Thompson", "Uva Estrangeira", "Abobora D'Agua", "Abobora Japonesa", "Abobora Moranga","Abobora Paulista", "Abobora Seca", "Abobrinha Brasileira", "Abobrinha Italiana","Batata Doce",'BATATA YAKON', "Alcachofra", "Batata Doce Amarela", "Batata Doce Rosada", "Berinjela Comum", "Berinjela Conserva", "Berinjela Japonesa", "Beterraba", "Cara", "Cenoura",
@@ -177,11 +177,7 @@ if __name__ == "__main__":
                                 produto = str(produto)
                                 #print('pord', produto)
                             
-                            #para o caso de se for banana maca
-                            #print("list",lista_produtos)
-                            # if "MACA" in tipo_produto and lista_produtos[-2] ==  "BANANA":
-                            #     produto = lista_produtos[-2]
-                            #     print('baaaa', produto)
+
                             regex_produtos_comparar = re.findall(r'\b(' + '|'.join(lista_produtos_comparar) + r')\b', unidecode(find_antes), re.IGNORECASE)
                             if regex_produtos_comparar:
                                 produto = str(regex_produtos_comparar).replace("[(", "").replace("'",'').replace(',','').replace(')]','')
@@ -336,8 +332,8 @@ if __name__ == "__main__":
                         #para testes
                         # result = '+++','cidade: ',cidade,'produto:', produto, type(produto) , 'tipo: ', tipo_produto, type(tipo_produto), 'unidade Emb: ',unidade_embalagem, type(unidade_embalagem),"Valor unidade de medida: ", valor_unidade_de_medidas, type(valor_unidade_de_medidas) ,"Unidade de medidas:", unidade_de_medidas, type(unidade_de_medidas), 'Situacao Mercado:',situacao_mercado, type(situacao_mercado), 'min: ', min, type(min), 'mc do dia: ', m_c_do_dia, type(m_c_do_dia), 'max: ', max, type(max),'M_C do dia Anterior: ', m_c_dia_anterior, type(m_c_dia_anterior), 'var: ', var, type(var),  'Procedencia: ', estados_siglas, type(estados_siglas),'Data: ', dia_da_semana
                         
-                        if find_unidade[0] and estados_siglas: 
+                        if find_unidade[0] and estados_siglas or regex_sitacao_mercado: 
                             #print(result)
-                            cursor.execute("INSERT INTO Produtos (data, produto, tipo, unidade_embalagem, valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, valor_min, valor_m_c_do_dia, valor_max, valor_variacao, estados_siglas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",(dia_da_semana, produto, tipo_produto, unidade_embalagem, valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, min, m_c_dia_anterior, max, var, estados_siglas))
+                            cursor.execute("INSERT INTO Produtos (data, produto, tipo, unidade_embalagem, valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, valor_min, valor_m_c_do_dia, valor_max, valor_variacao, estados_siglas, cidade) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",(dia_da_semana, produto, tipo_produto, unidade_embalagem, valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, min, m_c_dia_anterior, max, var, estados_siglas,'LONDRINA'))
                     conn.commit()
                     
