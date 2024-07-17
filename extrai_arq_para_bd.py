@@ -88,7 +88,10 @@ if __name__ == "__main__":
                         tipo = type(i[0])
                         #Seleção da lista
                         find_unidade=str(i)
-                        
+                        if 'produtos ausentes' == str(i[0]).lower():
+                            print('encontrou ausentes')
+                            produtos_ausentes += 1
+                            break
                         
                         print('Produto capturado:', find_unidade)
                         #print('pasou find', find_unidade)
@@ -340,4 +343,6 @@ if __name__ == "__main__":
                                 #print(result)
                                 cursor.execute("INSERT INTO Produtos (data, produto, tipo, unidade_embalagem, valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, valor_min, valor_m_c_do_dia, valor_max, valor_variacao, estados_siglas, cidade) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",(dia_da_semana, produto, tipo_produto, unidade_embalagem, valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, min, m_c_dia_anterior, max, var, estados_siglas,'LONDRINA'))
                     conn.commit()
-                    
+                #para parar documentos dezembro de 2023 para cima
+               if produtos_ausentes >= 1:
+                    break         
