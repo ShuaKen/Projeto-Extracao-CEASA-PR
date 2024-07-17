@@ -121,7 +121,7 @@ if __name__ == "__main__":
                         if 'Produto' in find_unidade or 'Centrais' in find_unidade or 'Mercado' in find_unidade:
                             continue
                         
-                        if ano_obtido <= 2023:
+                        if ano_obtido <= 2023 and 'dezembro de 2023' not in dia_da_semana:
                                                 
                             if tipo is str and i[0].isupper(): #encontra str com letras maiusculas
                                 produto = i[0]
@@ -147,7 +147,7 @@ if __name__ == "__main__":
                                     find_antes = regex_antes_unidade
                                     tipo_produto = str(find_antes).replace("[", "").replace('"','').replace(',','').replace(']','').replace("'","")
                         #caso especificos para obter produtos e tipos que ocorrem após o ano de 2024
-                        elif ano_obtido >= 2024: 
+                        elif ano_obtido >= 2024 or 'dezembro de 2023' in dia_da_semana :  
                             
                             #verifica valores antes da unidade embalagem(cx...)
                             find_nan_inicio = find_unidade.replace('[','').replace(']','').replace("'",'').split(',')
