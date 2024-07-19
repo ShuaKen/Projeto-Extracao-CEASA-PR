@@ -1,14 +1,15 @@
 import urllib.request
+from urllib.parse import unquote
 from bs4 import BeautifulSoup
 import wget
 import os
 import re
-from urllib.parse import unquote
 import fitz  # PyMuPDF
 import pikepdf
 
-def convert_to_pdfa(input_path, output_path):
+def convert_to_pdfa(input_path):
     try:
+        output_path = input_path.replace('.pdf', '_pdfa.pdf')
         # Abrir o PDF com PyMuPDF
         doc = fitz.open(input_path)
         
@@ -23,19 +24,13 @@ def convert_to_pdfa(input_path, output_path):
         # Salvar o PDF com as configurações necessárias para PDF/A usando PyMuPDF
         doc.save(output_path, garbage=4, deflate=True, clean=True)
         doc.close()
+        os.remove(input_path)
+        os.rename(output_path,input_path)
         
-        # Reabrir o PDF e usar pikepdf para realizar ajustes adicionais para conformidade PDF/A
-        with pikepdf.open(output_path) as pdf:
-            # Configurar para PDF/A-2b
-            pdf.save(output_path, options="pdfa-2b")
-        
-        # Verificar se o arquivo PDF/A é válido
-        if is_pdfa_valid(output_path):
-            print(f'Converted {input_path} to PDF/A and saved as {output_path}')
-        else:
-            print(f'Failed to convert {input_path} to PDF/A. The output file {output_path} is not a valid PDF/A file.')
     except Exception as e:
-        pass
+        print(f'An error occurred while converting to PDF/A: {e}')
+         
+
 
 def is_pdfa_valid(file_path):
     try:
@@ -89,14 +84,16 @@ for url_base in url_base_ceasa:
                 lista_url.append(url_com_https)
 
     for i in lista_url:
-        url = unquote(i)
-        regex_meses = re.findall(r'\b(' + '|'.join(meses) + r')(\d+)', url, re.IGNORECASE)
+        regex_meses = re.findall(r'\b(' + '|'.join(meses) + r')(\d+)', i, re.IGNORECASE)
+        
         if regex_meses:
+            url = unquote(i)
             mes = regex_meses
             mes_nome = regex_meses[0][0].lower()
             mes_numero = numeros_meses.get(mes_nome)
             qtd_numeros_data = regex_meses[-1][1]
             tam_data_numeros = len(qtd_numeros_data)
+
              # Formato do arquivo: MêsDDMMYYYY ou MêsDDMMAAAA
             if tam_data_numeros in [6, 8, 10]:
                 dia = qtd_numeros_data[:2]
@@ -111,30 +108,12 @@ for url_base in url_base_ceasa:
                 elif tam_data_numeros == 10:
                     # Lógica para formatos específicos, se necessário
                     pass  # Ajuste conforme o formato que você precisa
-            formato_nome_arquivo = f"convert{ano}-{mes_numero}-{dia}"       
-        elif 'cotacao' in i:
-            #alguns casos de 2021 possuem https://www.ceasa.pr.gov.br 2X
-            regex_https_duplo = novo_texto = re.sub(r"https://www\.ceasa\.pr\.gov\.br(http://www\.ceasa\.pr\.gov\.br.*)", r"\1", url)
-            if novo_texto:
-                url = novo_texto
-            regex_url_data = re.search(r"cotacaolda(\d{2})(\d{2})(\d{4})\.pdf$", url)
-            if regex_url_data:
-                dia = regex_url_data.group(1)
-                mes_numero = regex_url_data.group(2)
-                ano = regex_url_data.group(3)    
-            formato_nome_arquivo = f"convert{ano}-{mes_numero}-{dia}"    
-        else:
-            continue
-        
-        nome_arquivo = os.path.join(BAIXADOS, f'{formato_nome_arquivo}.pdf')       
-        if not os.path.exists(nome_arquivo):
-            baixar_arquivo(url, nome_arquivo)
-        else:
-            print(f'Arquivo já baixado: {nome_arquivo}')
-        if os.path.exists(nome_arquivo) and 'convert' in nome_arquivo:
-            input_path = nome_arquivo
-            output_path = nome_arquivo.replace('convert', '')
-            convert_to_pdfa(input_path, output_path)
-            #exclui arquivos com convert
-            os.remove(nome_arquivo)
-            
+
+                formato_nome_arquivo = f"{ano}-{mes_numero}-{dia}"
+                
+                nome_arquivo = os.path.join(BAIXADOS, f'{formato_nome_arquivo}.pdf')       
+                if not os.path.exists(nome_arquivo):
+                    baixar_arquivo(url, nome_arquivo)
+                    convert_to_pdfa(nome_arquivo)
+                else:
+                    print(f'Arquivo já baixado: {nome_arquivo}')
