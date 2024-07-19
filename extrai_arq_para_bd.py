@@ -75,6 +75,9 @@ if __name__ == "__main__":
         data = tabula.read_pdf(filename, multiple_tables=True, pages="all", stream=True, guess=False, encoding='latin-1')
         #data numerica do arquivo
         data_numerica = str(arquivo).replace('.pdf', '')
+        regex_ano_data = re.findall(r'^\d{4}', data_numerica)
+        ano_obtido = int(regex_ano_data[0])
+        produtos_ausentes = 0
         if data:
             for pag_num, df in enumerate(data, start=2):
                 selected_data = df.values.tolist() #seleciona linhas
@@ -110,13 +113,7 @@ if __name__ == "__main__":
                         if regex_cidades:
                             cidade = regex_cidades[-1]
                         #print('REGEX_CIDADES:', find_unidade)
-                        if regex_datas:
-                            dia_da_semana = regex_datas
-                            dia_da_semana = ''.join(dia_da_semana)
-                            regex_ano = re.findall(r'\d{4}', dia_da_semana)
-                            ano_obtido = regex_ano[-1]
-                            ano_obtido = int(ano_obtido)
-                            print('anoaa',regex_ano, 'confere', ano_obtido)
+                        
                     
                         #print('REGEX_DATAS:', find_unidade)
                         # if tipo is float:
@@ -336,6 +333,13 @@ if __name__ == "__main__":
                             continue
                         if lista_produtos:
                             produto = str(lista_produtos[-1])
+                        produto.upper()
+                        if tipo_produto is str:
+                            tipo_produto.title()
+                        unidade_embalagem.lower()
+                        if situacao_mercado is str:
+                            str(situacao_mercado).upper()
+                        estados_siglas.upper()
                         #para testes
                         # result = '+++','cidade: ',cidade,'produto:', produto, type(produto) , 'tipo: ', tipo_produto, type(tipo_produto), 'unidade Emb: ',unidade_embalagem, type(unidade_embalagem),"Valor unidade de medida: ", valor_unidade_de_medidas, type(valor_unidade_de_medidas) ,"Unidade de medidas:", unidade_de_medidas, type(unidade_de_medidas), 'Situacao Mercado:',situacao_mercado, type(situacao_mercado), 'min: ', min, type(min), 'mc do dia: ', m_c_do_dia, type(m_c_do_dia), 'max: ', max, type(max),'M_C do dia Anterior: ', m_c_dia_anterior, type(m_c_dia_anterior), 'var: ', var, type(var),  'Procedencia: ', estados_siglas, type(estados_siglas),'Data: ', dia_da_semana
                         
