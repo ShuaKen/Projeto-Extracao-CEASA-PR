@@ -35,7 +35,7 @@ def convert_to_pdfa(input_path, output_path):
         else:
             print(f'Failed to convert {input_path} to PDF/A. The output file {output_path} is not a valid PDF/A file.')
     except Exception as e:
-        print(f'An error occurred: {e}')
+        pass
 
 def is_pdfa_valid(file_path):
     try:
