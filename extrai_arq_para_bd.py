@@ -89,9 +89,10 @@ if __name__ == "__main__":
                         #Seleção da lista
                         find_unidade=str(i)
                         if 'produtos ausentes' == str(i[0]).lower():
-                            print('encontrou ausentes')
                             produtos_ausentes += 1
                             break
+                        if 'fonte:' in find_unidade.lower() or 'www.ceasa.pr.gov.br' in find_unidade.lower() or 'centrais ' in find_unidade.lower() or 'mercado atacadista' in find_unidade.lower() or 'produto' in find_unidade.lower() or 'endereço:' in find_unidade.lower() or 'fir ' in str(i[0]).lower() or 'fra ' in str(i[0]).lower() or 'est ' in str(i[0]).lower() or 'aus ' in str(i[0]).lower() or 'pesquisa ' in str(i[0]).lower() or 'cep:' in str(i[0]).lower() or 'obs:' in str(i[0]).lower():
+                            continue 
                         
                         print('Produto capturado:', find_unidade)
                         #print('pasou find', find_unidade)
