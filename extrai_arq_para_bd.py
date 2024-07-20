@@ -35,7 +35,7 @@ lista_produtos = []
 
 #dia da semana
 ano_obtido = 0
-cidade = dia_da_semana  = ''
+
 
 def listar_arquivos_em_pasta(caminho_pasta):
     try:
@@ -93,15 +93,9 @@ if __name__ == "__main__":
                         find_unidade=str(i)
                         if 'produtos ausentes' == str(i[0]).lower():
                             produtos_ausentes += 1
-                            break
-                        if 'fonte:' in find_unidade.lower() or 'www.ceasa.pr.gov.br' in find_unidade.lower() or 'centrais ' in find_unidade.lower() or 'mercado atacadista' in find_unidade.lower() or 'produto' in find_unidade.lower() or 'endereço:' in find_unidade.lower() or 'fir ' in str(i[0]).lower() or 'fra ' in str(i[0]).lower() or 'est ' in str(i[0]).lower() or 'aus ' in str(i[0]).lower() or 'pesquisa ' in str(i[0]).lower() or 'cep:' in str(i[0]).lower() or 'obs:' in str(i[0]).lower():
-                            continue 
-                        
+                            break                      
                         print('Produto capturado:', find_unidade)
-                        #print('pasou find', find_unidade)
-                        # if find_unidade_nan:
-                        #     find_unidade = find_unidade_nan
-                        #     print('if FIND_UNIDADE_NAN', find_unidade) 
+                        
                         regex_cidades = re.findall(r'\b(' + '|'.join(cidades) + r')\b', find_unidade, re.IGNORECASE)
                         #print('regex_cidades',regex_cidades)
                         #identifica as datas 
@@ -119,10 +113,10 @@ if __name__ == "__main__":
                         # if tipo is float:
                         #     continue
                         #print('FLOAT', find_unidade)
-                        if 'Produto' in find_unidade or 'Centrais' in find_unidade or 'Mercado' in find_unidade:
+                        if 'produto' in find_unidade.lower() or 'centrais' in find_unidade.lower() or 'mercado'.lower() in find_unidade or 'fonte: ' in find_unidade.lower() or 'c o t a ' in find_unidade.lower() or 'mercado ' in find_unidade.lower():
                             continue
                         
-                        if ano_obtido <= 2023 and 'dezembro de 2023' not in dia_da_semana:
+                        if ano_obtido <= 2023 and '2023-12' not in data_numerica: 
                                                 
                             if tipo is str and i[0].isupper(): #encontra str com letras maiusculas
                                 produto = i[0]
@@ -148,7 +142,7 @@ if __name__ == "__main__":
                                     find_antes = regex_antes_unidade
                                     tipo_produto = str(find_antes).replace("[", "").replace('"','').replace(',','').replace(']','').replace("'","")
                         #caso especificos para obter produtos e tipos que ocorrem após o ano de 2024
-                        elif ano_obtido >= 2024 or 'dezembro de 2023' in dia_da_semana :  
+                        elif ano_obtido >= 2024 or '2023-12' in data_numerica :
                             
                             #verifica valores antes da unidade embalagem(cx...)
                             find_nan_inicio = find_unidade.replace('[','').replace(']','').replace("'",'').split(',')
@@ -210,7 +204,7 @@ if __name__ == "__main__":
                         #para identificar os preços(MIN/ M_C DO DIA/ MAX M>C/ DIA ANTERIOR/ VAR %)
                         regex_preco= re.findall(r'\b\d+,\d{2}\b', find_unidade)
                         #print('regex_prego', regex_preco, 'Length',len(regex_preco))
-                        regex_produtos_2024= re.findall(r'^[A-Z]+(, "nan")+$', find_unidade, re.IGNORECASE)
+                       
                         
                         #verifica valores antes da unidade embalagem(cx...)
                         regex_antes_unidade = re.findall(r'^(.*?)\s*(?:{})'.format('|'.join(re.escape(p) for p in unidades_de_embalagens)), find_unidade, re.IGNORECASE)
@@ -297,7 +291,7 @@ if __name__ == "__main__":
                                     max = regex_preco[2]
                                     m_c_dia_anterior = regex_preco[3]  
                                     var = regex_preco[4] 
-                            if '2012' in dia_da_semana:  
+                            if '2012' in data_numerica :  
                                 if len(regex_preco) == 6:
                                     min = regex_preco[1]
                                     m_c_do_dia = regex_preco[2]
@@ -341,13 +335,13 @@ if __name__ == "__main__":
                             str(situacao_mercado).upper()
                         estados_siglas.upper()
                         #para testes
-                        # result = '+++','cidade: ',cidade,'produto:', produto, type(produto) , 'tipo: ', tipo_produto, type(tipo_produto), 'unidade Emb: ',unidade_embalagem, type(unidade_embalagem),"Valor unidade de medida: ", valor_unidade_de_medidas, type(valor_unidade_de_medidas) ,"Unidade de medidas:", unidade_de_medidas, type(unidade_de_medidas), 'Situacao Mercado:',situacao_mercado, type(situacao_mercado), 'min: ', min, type(min), 'mc do dia: ', m_c_do_dia, type(m_c_do_dia), 'max: ', max, type(max),'M_C do dia Anterior: ', m_c_dia_anterior, type(m_c_dia_anterior), 'var: ', var, type(var),  'Procedencia: ', estados_siglas, type(estados_siglas),'Data: ', dia_da_semana
+                        # result = '+++','cidade: ',cidade,'produto:', produto, type(produto) , 'tipo: ', tipo_produto, type(tipo_produto), 'unidade Emb: ',unidade_embalagem, type(unidade_embalagem),"Valor unidade de medida: ", valor_unidade_de_medidas, type(valor_unidade_de_medidas) ,"Unidade de medidas:", unidade_de_medidas, type(unidade_de_medidas), 'Situacao Mercado:',situacao_mercado, type(situacao_mercado), 'min: ', min, type(min), 'mc do dia: ', m_c_do_dia, type(m_c_do_dia), 'max: ', max, type(max),'M_C do dia Anterior: ', m_c_dia_anterior, type(m_c_dia_anterior), 'var: ', var, type(var),  'Procedencia: ', estados_siglas, type(estados_siglas),'Data: ', data_numerica
                         
                         if find_unidade[0] or tipo_produto: 
                             if unidade_embalagem or situacao_mercado or estados_siglas: 
                                 #print(result)
-                                cursor.execute("INSERT INTO Produtos (data, produto, tipo, unidade_embalagem, valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, valor_min, valor_m_c_do_dia, valor_max, valor_variacao, estados_siglas, cidade) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",(dia_da_semana, produto, tipo_produto, unidade_embalagem, valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, min, m_c_dia_anterior, max, var, estados_siglas,'LONDRINA'))
+                                cursor.execute("INSERT INTO Produtos (data, produto, tipo, unidade_embalagem, valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, valor_min, valor_m_c_do_dia, valor_max, valor_variacao, estados_siglas, cidade) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",(data_numerica, produto, tipo_produto, unidade_embalagem, valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, min, m_c_dia_anterior, max, var, estados_siglas,'LONDRINA'))
                     conn.commit()
                 #para parar documentos dezembro de 2023 para cima
-               if produtos_ausentes >= 1:
-                    break         
+            if produtos_ausentes >= 1:
+                break         
