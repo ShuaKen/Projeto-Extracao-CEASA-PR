@@ -93,7 +93,8 @@ if __name__ == "__main__":
                         find_unidade=str(i)
                         if 'produtos ausentes' == str(i[0]).lower():
                             produtos_ausentes += 1
-                            break                      
+                            break 
+                        find_comeco = find_unidade.split()[0].replace('[', '').replace("'", "").replace(']','').replace(',','')
                         print('Produto capturado:', find_unidade)
                         
                         regex_cidades = re.findall(r'\b(' + '|'.join(cidades) + r')\b', find_unidade, re.IGNORECASE)
@@ -118,14 +119,14 @@ if __name__ == "__main__":
                         
                         if ano_obtido <= 2023 and '2023-12' not in data_numerica: 
                                                 
-                            if tipo is str and i[0].isupper(): #encontra str com letras maiusculas
+                            if tipo is str and find_comeco.isupper(): #encontra str com letras maiusculas
                                 produto = i[0]
                                 lista_produtos.append(produto)
                                 #print('>>>PRD', produto)       
                                 if len(i) >= 2:
                                     tipo_produto = i[1]
                                     result = 'Produto: ', produto, 'tipo: ', tipo_produto  
-                            if tipo is str and i[0].istitle() or regex_tipo_mais_de_uma_palavra:
+                            if tipo is str and find_comeco.istitle() or regex_tipo_mais_de_uma_palavra:
                                 tipo_produto = i[0]
                                 
                                 result = 'Produto: ', produto, 'tipo: ', tipo_produto  
