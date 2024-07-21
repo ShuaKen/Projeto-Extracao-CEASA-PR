@@ -116,7 +116,7 @@ if __name__ == "__main__":
                         # if tipo is float:
                         #     continue
                         #print('FLOAT', find_unidade)
-                        if 'produto' in find_unidade.lower() or 'centrais' in find_unidade.lower() or 'mercado'.lower() in find_unidade or 'fonte: ' in find_unidade.lower() or 'c o t a ' in find_unidade.lower() or 'mercado ' in find_unidade.lower() or '#REF!' in find_unidade or 'nan' in find_comeco:
+                        if 'produto' in find_unidade.lower() or 'centrais' in find_unidade.lower() or 'mercado'.lower() in find_unidade or 'fonte: ' in find_unidade.lower() or 'c o t a ' in find_unidade.lower() or 'mercado ' in find_unidade.lower() or '#REF!' in find_unidade or 'nan' in find_comeco or 'legenda' in find_comeco.lower() or 'coleta' in find_comeco.lower() or 'data' in find_comeco.lower() or 'embalagem' in find_comeco.lower() or 'm_c' in find_comeco.lower():
                             continue
                         
                         if ano_obtido <= 2023 and '2023-12' not in data_numerica: 
