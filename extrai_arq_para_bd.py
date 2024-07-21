@@ -94,6 +94,8 @@ if __name__ == "__main__":
                         if 'produtos ausentes' == str(i[0]).lower():
                             produtos_ausentes += 1
                             break 
+                        if produtos_ausentes >= 1:
+                            continue
                         find_comeco = find_unidade.split()[0].replace('[', '').replace("'", "").replace(']','').replace(',','')
                         print('Produto capturado:', find_unidade)
                         
@@ -343,6 +345,4 @@ if __name__ == "__main__":
                                 #print(result)
                                 cursor.execute("INSERT INTO Produtos (data, produto, tipo, unidade_embalagem, valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, valor_min, valor_m_c_do_dia, valor_max, valor_variacao, estados_siglas, cidade) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",(data_numerica, produto, tipo_produto, unidade_embalagem, valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, min, m_c_dia_anterior, max, var, estados_siglas,'LONDRINA'))
                     conn.commit()
-                #para parar documentos dezembro de 2023 para cima
-            if produtos_ausentes >= 1:
-                break         
+                
