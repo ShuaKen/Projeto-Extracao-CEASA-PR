@@ -303,12 +303,12 @@ if __name__ == "__main__":
                             str(situacao_mercado).upper()
                             estados_siglas.upper()
                             #para testes
-                            print(f"{produto}{tipo_produto}{unidade_embalagem}{valor_unidade_de_medidas}{unidade_de_medidas}{situacao_mercado}{min}{m_c_do_dia}{max}{m_c_dia_anterior}{estados_siglas}")
+                            #print(f"{produto}{tipo_produto}{unidade_embalagem}{valor_unidade_de_medidas}{unidade_de_medidas}{situacao_mercado}{min}{m_c_do_dia}{max}{m_c_dia_anterior}{estados_siglas}")
                             result = '+++','produto:', produto, type(produto) , 'tipo: ', tipo_produto, type(tipo_produto), 'unidade Emb: ',unidade_embalagem, type(unidade_embalagem),"Valor unidade de medida: ", valor_unidade_de_medidas, type(valor_unidade_de_medidas) ,"Unidade de medidas:", unidade_de_medidas, type(unidade_de_medidas), 'Situacao Mercado:',situacao_mercado, type(situacao_mercado), 'min: ', min, type(min), 'mc do dia: ', m_c_do_dia, type(m_c_do_dia), 'max: ', max, type(max),'M_C do dia Anterior: ', m_c_dia_anterior, type(m_c_dia_anterior), 'var: ', var, type(var),  'Procedencia: ', estados_siglas, type(estados_siglas),'Data: ', data_numerica
                             #print(f'valor fora: {result}')
                             if tipo_produto != '[]': 
                                 print(result)
-                                #cursor.execute("INSERT INTO Produtos (data, produto, tipo, unidade_embalagem, valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, valor_min, valor_m_c_do_dia, valor_max, valor_variacao, estados_siglas, cidade) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",(data_numerica, produto, tipo_produto, unidade_embalagem,valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, min, m_c_dia_anterior, max, var, estados_siglas,'LONDRINA'))
+                                cursor.execute("INSERT INTO Produtos (data, produto, tipo, unidade_embalagem, valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, valor_min, valor_m_c_do_dia, valor_max, valor_variacao, estados_siglas, cidade) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",(data_numerica, produto, tipo_produto, unidade_embalagem,valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, min, m_c_dia_anterior, max, var, estados_siglas,'LONDRINA'))
                         conn.commit()       
         else:
             logging.info(f'O arquivo {filename}, já foi adicionado!')
