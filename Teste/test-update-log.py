@@ -312,7 +312,7 @@ if __name__ == "__main__":
                             #print(f'valor fora: {result}')
                             if tipo_produto != '[]': 
                                 print(result)
-                                cursor.execute("INSERT INTO Produtos (data, produto, tipo, unidade_embalagem, valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, valor_min, valor_m_c_do_dia, valor_max, valor_variacao, estados_siglas, cidade) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",(data_numerica, produto, tipo_produto, unidade_embalagem,valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, min, m_c_dia_anterior, max, var, estados_siglas,'LONDRINA'))
+                                cursor.execute("INSERT INTO Produtos (data, produto, tipo, unidade_embalagem, valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, valor_min, valor_m_c_do_dia, valor_max,valor_m_c_do_dia_anterior, valor_variacao, estados_siglas, cidade) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",(data_numerica, produto, tipo_produto, unidade_embalagem,valor_unidade_de_medidas, unidade_de_medidas, situacao_mercado, min, m_c_do_dia, max, m_c_dia_anterior, var, estados_siglas,'LONDRINA'))
                         conn.commit()       
         else:
             logging.info(f'O arquivo {filename}, já foi adicionado!')
